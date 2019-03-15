@@ -1,0 +1,498 @@
+// ~->[DNET-1]->~
+
+// File created by GmytrasiewiczP_2 at UIC using Netica 5.02 on Oct 26, 2018 at 00:54:14.
+
+bnet tennis {
+AutoCompile = TRUE;
+autoupdate = TRUE;
+whenchanged = 1540533241;
+
+visual V1 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLENAME;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	windowposn = (26, 26, 901, 332);
+	resolution = 72;
+	drawingbounds = (1345, 720);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00C0C0C0;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00F8EED2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00D3CAA6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00C8C8C8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00FFFFFF;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00FFFFB4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00FFBDBD;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00DEE8FF;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00F0FAFA;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00FFFFFF;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		landscape = FALSE;
+		PagesHorizontal = 1;
+		PagesVertical = 1;
+		};
+	};
+
+node Age {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("below_19", "20-30", "above_30");
+	parents = ();
+	probs = 
+		// below_19     20-30        above_30     
+		  (0.2,         0.55,        0.25);
+	whenchanged = 1540533216;
+	belief = (0.2, 0.55, 0.25);
+	visual V1 {
+		center = (90, 42);
+		height = 19;
+		};
+	};
+
+node Rank {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("1-10", "11-50", "above_50");
+	parents = ();
+	probs = 
+		// 1-10         11-50        above_50     
+		  (0.05,        0.1,         0.85);
+	whenchanged = 1540533223;
+	belief = (0.05, 0.1, 0.85);
+	visual V1 {
+		center = (270, 42);
+		height = 20;
+		};
+	};
+
+node Win_Percentage {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("0-50", "51-70", "71-100");
+	parents = ();
+	probs = 
+		// 0-50         51-70        71-100       
+		  (0.4,         0.5,         0.1);
+	whenchanged = 1540533224;
+	belief = (0.4, 0.5, 0.1);
+	visual V1 {
+		center = (444, 42);
+		height = 21;
+		};
+	};
+
+node Player_Profile {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("Good", "Average", "Bad");
+	parents = (Age, Rank, Win_Percentage);
+	probs = 
+		// Good         Average      Bad           // Age      Rank     Win_Percentage 
+		  (0.6,         0.3,         0.1,          // below_19 1-10     0-50           
+		   0.65,        0.35,        0,            // below_19 1-10     51-70          
+		   0.8,         0.2,         0,            // below_19 1-10     71-100         
+		   0.3,         0.5,         0.2,          // below_19 11-50    0-50           
+		   0.4,         0.5,         0.1,          // below_19 11-50    51-70          
+		   0.6,         0.35,        0.05,         // below_19 11-50    71-100         
+		   0,           0.2,         0.8,          // below_19 above_50 0-50           
+		   0,           0.3,         0.7,          // below_19 above_50 51-70          
+		   0.1,         0.3,         0.6,          // below_19 above_50 71-100         
+		   0.6,         0.3,         0.1,          // 20-30    1-10     0-50           
+		   0.8,         0.19,        0.01,         // 20-30    1-10     51-70          
+		   0.95,        0.04,        0.01,         // 20-30    1-10     71-100         
+		   0.5,         0.4,         0.1,          // 20-30    11-50    0-50           
+		   0.55,        0.4,         0.05,         // 20-30    11-50    51-70          
+		   0.7,         0.25,        0.05,         // 20-30    11-50    71-100         
+		   0.15,        0.5,         0.35,         // 20-30    above_50 0-50           
+		   0.2,         0.5,         0.3,          // 20-30    above_50 51-70          
+		   0.25,        0.7,         0.05,         // 20-30    above_50 71-100         
+		   0.55,        0.35,        0.1,          // above_30 1-10     0-50           
+		   0.65,        0.35,        0,            // above_30 1-10     51-70          
+		   0.85,        0.15,        0,            // above_30 1-10     71-100         
+		   0.3,         0.5,         0.2,          // above_30 11-50    0-50           
+		   0.4,         0.5,         0.1,          // above_30 11-50    51-70          
+		   0.6,         0.35,        0.05,         // above_30 11-50    71-100         
+		   0,           0.2,         0.8,          // above_30 above_50 0-50           
+		   0,           0.3,         0.7,          // above_30 above_50 51-70          
+		   0.1,         0.3,         0.6);         // above_30 above_50 71-100         ;
+	whenchanged = 1540519945;
+	belief = (0.171925, 0.3988475, 0.4292275);
+	visual V1 {
+		center = (282, 180);
+		height = 5;
+		};
+	};
+
+node Preffered_court_type {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("Hard", "Clay", "Grass");
+	parents = ();
+	probs = 
+		// Hard         Clay         Grass        
+		  (0.4,         0.4,         0.2);
+	whenchanged = 1540533226;
+	belief = (0.4, 0.4, 0.2);
+	visual V1 {
+		center = (648, 40);
+		height = 1;
+		};
+	};
+
+node Tournament_court_type {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("Hard", "Clay", "Grass");
+	parents = ();
+	probs = 
+		// Hard         Clay         Grass        
+		  (0.65,        0.3,         0.05);
+	whenchanged = 1540533227;
+	belief = (0.65, 0.3, 0.05);
+	visual V1 {
+		center = (834, 40);
+		height = 2;
+		};
+	};
+
+node Compatibility {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Medium", "Low");
+	parents = (Preffered_court_type, Tournament_court_type);
+	probs = 
+		// High         Medium       Low           // Preffered_court_type Tournament_court_type 
+		  (1,           0,           0,            // Hard                 Hard                  
+		   0.15,        0.8,         0.05,         // Hard                 Clay                  
+		   0.2,         0.75,        0.05,         // Hard                 Grass                 
+		   0.2,         0.8,         0,            // Clay                 Hard                  
+		   1,           0,           0,            // Clay                 Clay                  
+		   0.2,         0.1,         0.7,          // Clay                 Grass                 
+		   0.3,         0.6,         0.1,          // Grass                Hard                  
+		   0.05,        0.1,         0.85,         // Grass                Clay                  
+		   1,           0,           0);           // Grass                Grass                 ;
+	whenchanged = 1540520971;
+	belief = (0.51, 0.405, 0.085);
+	visual V1 {
+		center = (744, 192);
+		height = 18;
+		};
+	};
+
+node Season_Performance {
+	kind = NATURE;
+	discrete = TRUE;
+	statetitles = ("Good", "Bad");
+	parents = ();
+	whenchanged = 1540533229;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (1008, 33);
+		height = 4;
+		};
+	};
+
+node Recent_Injury {
+	kind = NATURE;
+	discrete = TRUE;
+	statetitles = ("Yes", "No");
+	parents = ();
+	whenchanged = 1540533230;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (1176, 33);
+		height = 3;
+		};
+	};
+
+node Current_Form {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("Good", "Bad");
+	parents = (Season_Performance, Recent_Injury);
+	probs = 
+		// Good         Bad           // Season_Performance Recent_Injury 
+		  (0.2,         0.8,          // Good               Yes           
+		   1,           0,            // Good               No            
+		   0,           1,            // Bad                Yes           
+		   0.3,         0.7);         // Bad                No            ;
+	whenchanged = 1540520234;
+	belief = (0.375, 0.625);
+	visual V1 {
+		center = (1092, 204);
+		height = 6;
+		};
+	};
+
+node Firsr_Serve_Percentage {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.5,         0.5);
+	whenchanged = 1540533232;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (162, 582);
+		height = 10;
+		};
+	};
+
+node Second_Serve_Percentage {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.7,         0.3);
+	whenchanged = 1540533233;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (348, 582);
+		height = 9;
+		};
+	};
+
+node Serving_Skills {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = (Firsr_Serve_Percentage, Second_Serve_Percentage);
+	probs = 
+		// High         Low           // Firsr_Serve_Percentage Second_Serve_Percentage 
+		  (0.95,        0.05,         // High                   High                    
+		   0.6,         0.4,          // High                   Low                     
+		   0.4,         0.6,          // Low                    High                    
+		   0.25,        0.75);        // Low                    Low                     ;
+	whenchanged = 1540522666;
+	belief = (0.6, 0.4);
+	visual V1 {
+		center = (264, 486);
+		height = 8;
+		};
+	};
+
+node Volleying_Skills {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.3,         0.7);
+	whenchanged = 1540533234;
+	belief = (0.3, 0.7);
+	visual V1 {
+		center = (558, 582);
+		height = 11;
+		};
+	};
+
+node Reflex {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.4,         0.6);
+	whenchanged = 1540533235;
+	belief = (0.4, 0.6);
+	visual V1 {
+		center = (720, 582);
+		height = 12;
+		};
+	};
+
+node Net_Game {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = (Volleying_Skills, Reflex);
+	probs = 
+		// High         Low           // Volleying_Skills Reflex 
+		  (0.95,        0.05,         // High             High   
+		   0.6,         0.4,          // High             Low    
+		   0.4,         0.6,          // Low              High   
+		   0.05,        0.95);        // Low              Low    ;
+	whenchanged = 1540516038;
+	belief = (0.355, 0.645);
+	visual V1 {
+		center = (624, 504);
+		height = 13;
+		};
+	};
+
+node Running_Speed {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.5,         0.5);
+	whenchanged = 1540533241;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (900, 582);
+		height = 15;
+		};
+	};
+
+node Endurance {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.5,         0.5);
+	whenchanged = 1540533240;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (1068, 582);
+		height = 16;
+		};
+	};
+
+node Groundstrokes {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Low");
+	parents = (Running_Speed, Endurance);
+	probs = 
+		// High         Low           // Running_Speed Endurance 
+		  (0.95,        0.05,         // High          High      
+		   0.4,         0.6,          // High          Low       
+		   0.6,         0.4,          // Low           High      
+		   0.05,        0.95);        // Low           Low       ;
+	whenchanged = 1540516065;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (960, 504);
+		height = 14;
+		};
+	};
+
+node Player_skills {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("High", "Medium", "Low");
+	parents = (Serving_Skills, Net_Game, Groundstrokes);
+	probs = 
+		// High         Medium       Low           // Serving_Skills Net_Game Groundstrokes 
+		  (1,           0,           0,            // High           High     High          
+		   0.8,         0.2,         0,            // High           High     Low           
+		   0.9,         0.1,         0,            // High           Low      High          
+		   0.2,         0.45,        0.35,         // High           Low      Low           
+		   0.75,        0.15,        0.1,          // Low            High     High          
+		   0.1,         0.2,         0.7,          // Low            High     Low           
+		   0.1,         0.5,         0.4,          // Low            Low      High          
+		   0,           0,           1);           // Low            Low      Low           ;
+	whenchanged = 1540522290;
+	belief = (0.4778, 0.217075, 0.305125);
+	visual V1 {
+		center = (624, 402);
+		height = 7;
+		};
+	};
+
+node Final_Decision {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	statetitles = ("Safe_Bet", "Moderately_Safe_Bet", "Ambitious_Bet");
+	parents = (Player_Profile, Compatibility, Current_Form, Player_skills);
+	probs = 
+		// Safe_Bet     Moderately_Safe_ Ambitious_Bet  // Player_Profile Compatibility Current_Form Player_skills 
+		  (1,           0,           0,            // Good           High          Good         High          
+		   0.95,        0.05,        0,            // Good           High          Good         Medium        
+		   0.6,         0.3,         0.1,          // Good           High          Good         Low           
+		   0.05,        0.1,         0.85,         // Good           High          Bad          High          
+		   0,           0.1,         0.9,          // Good           High          Bad          Medium        
+		   0,           0.05,        0.95,         // Good           High          Bad          Low           
+		   0.6,         0.35,        0.05,         // Good           Medium        Good         High          
+		   0.35,        0.55,        0.1,          // Good           Medium        Good         Medium        
+		   0.3,         0.55,        0.15,         // Good           Medium        Good         Low           
+		   0.1,         0.2,         0.7,          // Good           Medium        Bad          High          
+		   0.05,        0.15,        0.8,          // Good           Medium        Bad          Medium        
+		   0,           0.1,         0.9,          // Good           Medium        Bad          Low           
+		   0.1,         0.6,         0.3,          // Good           Low           Good         High          
+		   0.05,        0.65,        0.3,          // Good           Low           Good         Medium        
+		   0,           0.3,         0.7,          // Good           Low           Good         Low           
+		   0,           0.2,         0.8,          // Good           Low           Bad          High          
+		   0,           0.15,        0.85,         // Good           Low           Bad          Medium        
+		   0,           0.1,         0.9,          // Good           Low           Bad          Low           
+		   0.2,         0.6,         0.2,          // Average        High          Good         High          
+		   0.1,         0.6,         0.3,          // Average        High          Good         Medium        
+		   0,           0.3,         0.7,          // Average        High          Good         Low           
+		   0,           0.3,         0.7,          // Average        High          Bad          High          
+		   0,           0.25,        0.75,         // Average        High          Bad          Medium        
+		   0,           0.2,         0.8,          // Average        High          Bad          Low           
+		   0.1,         0.7,         0.2,          // Average        Medium        Good         High          
+		   0.05,        0.65,        0.3,          // Average        Medium        Good         Medium        
+		   0.05,        0.35,        0.6,          // Average        Medium        Good         Low           
+		   0.02,        0.28,        0.7,          // Average        Medium        Bad          High          
+		   0.01,        0.25,        0.74,         // Average        Medium        Bad          Medium        
+		   0,           0.2,         0.8,          // Average        Medium        Bad          Low           
+		   0.05,        0.45,        0.5,          // Average        Low           Good         High          
+		   0,           0.35,        0.65,         // Average        Low           Good         Medium        
+		   0,           0.3,         0.7,          // Average        Low           Good         Low           
+		   0,           0.25,        0.75,         // Average        Low           Bad          High          
+		   0,           0.22,        0.78,         // Average        Low           Bad          Medium        
+		   0,           0.2,         0.8,          // Average        Low           Bad          Low           
+		   0.12,        0.55,        0.33,         // Bad            High          Good         High          
+		   0.11,        0.5,         0.39,         // Bad            High          Good         Medium        
+		   0.1,         0.4,         0.5,          // Bad            High          Good         Low           
+		   0.09,        0.14,        0.77,         // Bad            High          Bad          High          
+		   0.08,        0.12,        0.8,          // Bad            High          Bad          Medium        
+		   0.07,        0.1,         0.83,         // Bad            High          Bad          Low           
+		   0.09,        0.6,         0.31,         // Bad            Medium        Good         High          
+		   0.08,        0.55,        0.37,         // Bad            Medium        Good         Medium        
+		   0.07,        0.4,         0.53,         // Bad            Medium        Good         Low           
+		   0.05,        0.2,         0.75,         // Bad            Medium        Bad          High          
+		   0.02,        0.19,        0.79,         // Bad            Medium        Bad          Medium        
+		   0.01,        0.18,        0.81,         // Bad            Medium        Bad          Low           
+		   0.05,        0.2,         0.75,         // Bad            Low           Good         High          
+		   0.04,        0.18,        0.78,         // Bad            Low           Good         Medium        
+		   0.03,        0.17,        0.8,          // Bad            Low           Good         Low           
+		   0,           0.1,         0.9,          // Bad            Low           Bad          High          
+		   0,           0.05,        0.95,         // Bad            Low           Bad          Medium        
+		   0,           0,           1);           // Bad            Low           Bad          Low           ;
+	whenchanged = 1540529667;
+	belief = (0.08911156, 0.2894014, 0.621487);
+	visual V1 {
+		center = (606, 306);
+		height = 17;
+		link 2 {
+			path = ((705, 225), (646, 273));
+			};
+		};
+	};
+ElimOrder = (Season_Performance, Recent_Injury, Firsr_Serve_Percentage, Second_Serve_Percentage, Volleying_Skills, Reflex, Running_Speed, Endurance, Serving_Skills, Net_Game, Groundstrokes, Preffered_court_type, Tournament_court_type, Age, Rank, Win_Percentage, Player_Profile, Compatibility, Current_Form, Player_skills, Final_Decision);
+};
